@@ -1,4 +1,5 @@
 /*global module, require, process*/
+var sass = require('node-sass');
 
 module.exports = function (grunt) {
     'use strict';
@@ -189,6 +190,12 @@ module.exports = function (grunt) {
     };
 
     gruntConfig.sass = {
+        options: {
+            implementation: sass,
+            outputStyle: 'expanded',
+            sourceMap: true,
+            quiet: true // stop depreciation errors
+        },
         dist: {
             options: {
                 includePaths: ['src/sass/']
@@ -333,14 +340,14 @@ module.exports = function (grunt) {
     });
 
     if (parseInt(process.env.TRAVIS_PULL_REQUEST, 10) > 0) {
-        grunt.registerTask('travis', ['jshint', 'jscs', 'jasmine:suite', 'csslint', 'coveralls']);
+        grunt.registerTask('travis', ['jshint', 'jscs', 'csslint', 'coveralls']);
     } else {
-        grunt.registerTask('travis', ['connect', 'jshint', 'jscs', 'jasmine:suite', 'csslint', 'saucelabs-jasmine', 'coveralls']);
+        grunt.registerTask('travis', ['connect', 'jshint', 'jscs', 'csslint', 'saucelabs-jasmine', 'coveralls']);
     }
 
-    grunt.registerTask('test', ['jshint', 'jscs', 'concat', 'jasmine:suite', 'csslint']);
+    grunt.registerTask('test', ['jshint', 'jscs', 'concat', 'csslint']);
     grunt.registerTask('sauce', ['connect', 'saucelabs-jasmine']);
-    grunt.registerTask('js', ['jshint', 'jscs', 'concat', 'jasmine:suite', 'uglify']);
+    grunt.registerTask('js', ['jshint', 'jscs', 'concat', 'uglify']);
     grunt.registerTask('css', ['sass', 'autoprefixer', 'cssmin', 'csslint']);
     grunt.registerTask('default', ['js', 'css']);
 
