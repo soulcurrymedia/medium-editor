@@ -5241,11 +5241,11 @@ MediumEditor.extensions = {};
             [new RegExp(/<!--StartFragment-->|<!--EndFragment-->/g), ''],
 
             // Trailing BR elements
-            [new RegExp(/<br>$/i), ''],
+            // [new RegExp(/<br>$/i), ''],
 
             // replace two bogus tags that begin pastes from google docs
             [new RegExp(/<[^>]*docs-internal-guid[^>]*>/gi), ''],
-            [new RegExp(/<\/b>(<br[^>]*>)?$/gi), ''],
+            // [new RegExp(/<\/b>(<br[^>]*>)?$/gi), ''],
 
              // un-html spaces and newlines inserted by OS X
             [new RegExp(/<span class="Apple-converted-space">\s+<\/span>/g), ' '],
@@ -5268,8 +5268,8 @@ MediumEditor.extensions = {};
 
             // Newlines between paragraphs in html have no syntactic value,
             // but then have a tendency to accidentally become additional paragraphs down the line
-            [new RegExp(/<\/p>\n+/gi), '</p>'],
-            [new RegExp(/\n+<p/gi), '<p'],
+            // [new RegExp(/<\/p>\n+/gi), '</p>'],
+            // [new RegExp(/\n+<p/gi), '<p'],
 
             // Microsoft Word makes these odd tags, like <o:p></o:p>
             [new RegExp(/<\/?o:[a-z]*>/gi), ''],
@@ -5430,7 +5430,7 @@ MediumEditor.extensions = {};
                 if (paragraphs.length > 1) {
                     for (p = 0; p < paragraphs.length; p += 1) {
                         if (paragraphs[p] !== '') {
-                            html += '<p>' + MediumEditor.util.htmlEntities(paragraphs[p]) + '</p>';
+                            html += ' <p>' + MediumEditor.util.htmlEntities(paragraphs[p]) + '</p> ';
                         }
                     }
                 } else {
@@ -5603,7 +5603,7 @@ MediumEditor.extensions = {};
 
         cleanPaste: function (text) {
             var i, elList, tmp, workEl,
-                multiline = /<p|<br|<div/.test(text),
+                multiline = /<p|<div/.test(text),
                 replacements = [].concat(
                     this.preCleanReplacements || [],
                     createReplacements(),
@@ -5621,10 +5621,10 @@ MediumEditor.extensions = {};
             tmp = this.document.createElement('div');
 
             // double br's aren't converted to p tags, but we want paragraphs.
-            tmp.innerHTML = '<p>' + text.split('<br><br>').join('</p><p>') + '</p>';
+            // tmp.innerHTML = '<p>' + text.split('<br><br>').join('</p><p>') + '</p>';
 
             // block element cleanup
-            elList = tmp.querySelectorAll('a,p,div,br');
+            elList = tmp.querySelectorAll('div');
             for (i = 0; i < elList.length; i += 1) {
                 workEl = elList[i];
 
@@ -7977,7 +7977,7 @@ MediumEditor.parseVersionString = function (release) {
 
 MediumEditor.version = MediumEditor.parseVersionString.call(this, ({
     // grunt-bump looks for this:
-    'version': '5.23.3'
+    'version': '5.23.9'
 }).version);
 
     return MediumEditor;
